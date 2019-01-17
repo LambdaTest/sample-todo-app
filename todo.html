@@ -42,7 +42,7 @@ angular.module('sampleApp', [])
       {text:'Fifth Item', done:false, name: 'li5'}];
 
     sampleList.addsampletodo = function() {
-      sampleList.sampletodos.push({text:sampleList.sampletodoText, done:false});
+      sampleList.sampletodos.push({text:sampleList.sampletodoText, done:false,name:'li'+(sampleList.sampletodos.length+1)});
       sampleList.sampletodoText = '';
     };
 
@@ -53,9 +53,6 @@ angular.module('sampleApp', [])
       });
       return count;
     };
-
-
-  });
 </script>
 </head>
 
