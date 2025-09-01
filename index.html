@@ -77,7 +77,7 @@
             .controller('SampleListController', function() {
                 var sampleList = this;
                 
-                // Initial list of to-do items
+                // Initial list of to-do items, expanded to 9 items for consistent XPath
                 sampleList.sampletodos = [
                     { text: 'Complete initial setup', done: false, name: 'li1' },
                     { text: 'Deploy to staging environment', done: false, name: 'li2' },
@@ -157,6 +157,8 @@
                     </button>
                 </li>
             </ul>
+
+            <!-- Form to add new to-do items -->
             <form ng-submit="sampleList.addsampletodo()" class="flex flex-col sm:flex-row gap-3">
                 <input 
                     type="text" 
@@ -165,6 +167,7 @@
                     size="30"
                     placeholder="Add a new task..." 
                     class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 transition-shadow">
+                <!-- Updated button to LambdaTest colors -->
                 <input 
                     class="w-full sm:w-auto bg-rose-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 transition-transform duration-200 active:scale-95 cursor-pointer" 
                     type="submit" 
@@ -177,5 +180,4 @@
 
 </body>
 </html>
-
 
