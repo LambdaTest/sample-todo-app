@@ -1,86 +1,181 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Sample page - lambdatest.com</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern To-Do App | LambdaTest</title>
+    
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Custom styles for a more polished look */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Using a LambdaTest-inspired background */
+            background-color: #f8f9fc;
+            /* Subtle repeating LambdaTest logo pattern */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 100 100'%3E%3Cpath d='M25 85 L50 15 L75 85 M35 60 L65 60' stroke='%23eef2f5' stroke-width='8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        }
+        
+        /* Added animation for list items appearing */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        .todo-item {
+            animation: fadeIn 0.3s ease-out;
+        }
 
+        /* Custom Checkbox Styling */
+        .custom-checkbox {
+            -webkit-appearance: none;
+            appearance: none;
+            position: relative;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #cbd5e1; /* gray-300 */
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            flex-shrink: 0;
+            margin-right: 16px; /* Spacing between checkbox and text */
+        }
 
-<style type="text/css">
-.well {
-  font-size: 32px;
+        .custom-checkbox:checked {
+            /* Updated to LambdaTest color scheme (rose) */
+            background-color: #e11d48; /* rose-600 */
+            border-color: #e11d48; /* rose-600 */
+        }
+        
+        /* Checkmark icon for the custom checkbox */
+        .custom-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 7px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+    </style>
 
-}
-.done-true {
-	text-decoration: line-through;
-	color: grey;
-}
-input[type=checkbox]
-{
-  /* Double-sized Checkboxes */
-  -ms-transform: scale(1.5); /* IE */
-  -moz-transform: scale(1.5); /* FF */
-  -webkit-transform: scale(1.5); /* Safari and Chrome */
-  -o-transform: scale(1.5); /* Opera */
-  padding: 10px;
-  margin: 15px;
-}</style>
+    <script type="text/javascript">
+        // AngularJS application module and controller
+        angular.module('sampleApp', [])
+            .controller('SampleListController', function() {
+                var sampleList = this;
+                
+                // Initial list of to-do items
+                sampleList.sampletodos = [
+                    { text: 'Complete initial setup', done: false, name: 'li1' },
+                    { text: 'Deploy to staging environment', done: false, name: 'li2' },
+                    { text: 'Run automated tests', done: false, name: 'li3' },
+                    { text: 'Review feedback from team', done: false, name: 'li4' },
+                    { text: 'Prepare for production release', done: false, name: 'li5' }
+                ];
 
+                // Function to add a new to-do item
+                sampleList.addsampletodo = function() {
+                    if (sampleList.sampletodoText && sampleList.sampletodoText.trim() !== '') {
+                        sampleList.sampletodos.push({
+                            text: sampleList.sampletodoText,
+                            done: false,
+                            name: 'li' + (sampleList.sampletodos.length + 1)
+                        });
+                        sampleList.sampletodoText = ''; // Clear the input field
+                    }
+                };
+                
+                // New function to delete a to-do item
+                sampleList.deleteTodo = function(index) {
+                    sampleList.sampletodos.splice(index, 1);
+                };
 
-<script type="text/javascript">
-angular.module('sampleApp', [])
-  .controller('SampleListController', function() {
-    var sampleList = this;
-    sampleList.sampletodos = [
-      {text:'First Item', done:false, name: 'li1'},
-      {text:'Second Item', done:false, name: 'li2'},
-      {text:'Third Item', done:false, name: 'li3'},
-      {text:'Fourth Item', done:false, name: 'li4'},
-      {text:'Fifth Item', done:false, name: 'li5'}];
-
-    sampleList.addsampletodo = function() {
-      sampleList.sampletodos.push({text:sampleList.sampletodoText, done:false, name:'li'+(sampleList.sampletodos.length+1)});
-      sampleList.sampletodoText = '';
-    };
-
-    sampleList.remaining = function() {
-      var count = 0;
-      angular.forEach(sampleList.sampletodos, function(sampletodo) {
-        count += sampletodo.done ? 0 : 1;
-      });
-      return count;
-    };
-  });
-</script>
+                // Function to calculate the number of remaining (not done) items
+                sampleList.remaining = function() {
+                    var count = 0;
+                    angular.forEach(sampleList.sampletodos, function(sampletodo) {
+                        count += sampletodo.done ? 0 : 1;
+                    });
+                    return count;
+                };
+            });
+    </script>
 </head>
 
-<body>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen px-4">
 
-	<div ng-app="sampleApp">
-  	<div class="container">
-  		<h2>LambdaTest Sample App</h2>
-  		<div class="well" ng-controller="SampleListController as sampleList">
-  			<span>{{sampleList.remaining()}} of {{sampleList.sampletodos.length}} remaining</span>
+    <!-- Main application container -->
+    <div ng-app="sampleApp" class="w-full max-w-lg">
+        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-2xl p-6 sm:p-8" ng-controller="SampleListController as sampleList">
+            
+            <!-- Header section with an icon -->
+            <header class="flex items-center justify-center flex-col text-center mb-6">
+                 <!-- Updated icon to LambdaTest colors -->
+                 <div class="flex items-center justify-center bg-rose-100 rounded-full h-16 w-16 mb-4">
+                     <svg class="h-8 w-8 text-rose-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                 </div>
+                <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">LambdaTest To-Do</h1>
+                <p class="text-gray-500 mt-2">
+                    <span ng-if="sampleList.remaining() > 0">
+                        You have {{sampleList.remaining()}} of {{sampleList.sampletodos.length}} tasks remaining.
+                    </span>
+                    <span ng-if="sampleList.remaining() === 0" class="text-green-500 font-semibold">
+                        All tasks completed! Great work!
+                    </span>
+                </p>
+            </header>
 
-  			<ul class="list-unstyled">
-  				<li ng-repeat="sampletodo in sampleList.sampletodos">
-  					<input type="checkbox" ng-model="sampletodo.done" name="{{sampletodo.name}}">
-  					<span class="done-{{sampletodo.done}}">{{sampletodo.text}}</span>
-  				</li>
-  			</ul>
+            <!-- To-Do List -->
+            <ul class="list-unstyled space-y-3 mb-6">
+                <!-- ng-repeat directive to iterate over to-do items -->
+                <li ng-repeat="sampletodo in sampleList.sampletodos" class="todo-item group flex items-center justify-between p-3 rounded-lg transition-all duration-200 hover:bg-gray-50 hover:shadow-md">
+                    <div class="flex items-center overflow-hidden mr-2">
+                        <input type="checkbox" ng-model="sampletodo.done" name="{{sampletodo.name}}" class="custom-checkbox">
+                        <!-- Text of the to-do item with responsive font size -->
+                        <span ng-class="{'line-through text-gray-400': sampletodo.done, 'text-gray-700': !sampletodo.done}" class="text-base sm:text-lg transition-colors duration-300 truncate">
+                            {{sampletodo.text}}
+                        </span>
+                    </div>
+                     <!-- Delete button that appears on hover, with an increased tap area for mobile -->
+                    <button ng-click="sampleList.deleteTodo($index)" class="text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-500 p-2 rounded-full -m-2 flex-shrink-0">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                </li>
+            </ul>
+            <form ng-submit="sampleList.addsampletodo()" class="flex flex-col sm:flex-row gap-3">
+                <input 
+                    type="text" 
+                    id="sampletodotext" 
+                    ng-model="sampleList.sampletodoText" 
+                    size="30"
+                    placeholder="Add a new task..." 
+                    class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 transition-shadow">
+                <input 
+                    class="w-full sm:w-auto bg-rose-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 transition-transform duration-200 active:scale-95 cursor-pointer" 
+                    type="submit" 
+                    id="addbutton" 
+                    value="Add">
+            </form>
 
-  			<form ng-submit="sampleList.addsampletodo()">
-  				<input type="text" id="sampletodotext" ng-model="sampleList.sampletodoText"  size="30"
-  				 placeholder="Want to add more">
-  				<input class="btn btn-primary" type="submit" id="addbutton" value="add">
-  			</form>
-  		</div>
-  	</div>
-  </div>
-
+        </div>
+    </div>
 
 </body>
 </html>
+
+
