@@ -98,10 +98,7 @@
                     }
                 };
                 
-                // New function to delete a to-do item
-                sampleList.deleteTodo = function(index) {
-                    sampleList.sampletodos.splice(index, 1);
-                };
+                // NOTE: The delete function and button have been removed to match the original DOM structure.
 
                 // Function to calculate the number of remaining (not done) items
                 sampleList.remaining = function() {
@@ -117,64 +114,59 @@
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen px-4">
 
-    <!-- Main application container -->
-    <div ng-app="sampleApp" class="w-full max-w-lg">
-        <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-2xl p-6 sm:p-8" ng-controller="SampleListController as sampleList">
-            
-            <!-- Header section with an icon -->
-            <header class="flex items-center justify-center flex-col text-center mb-6">
-                 <!-- Updated icon to LambdaTest colors -->
-                 <div class="flex items-center justify-center bg-rose-100 rounded-full h-16 w-16 mb-4">
-                     <svg class="h-8 w-8 text-rose-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                 </div>
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">LambdaTest To-Do</h1>
-                <p class="text-gray-500 mt-2">
-                    <span ng-if="sampleList.remaining() > 0">
-                        You have {{sampleList.remaining()}} of {{sampleList.sampletodos.length}} tasks remaining.
-                    </span>
-                    <span ng-if="sampleList.remaining() === 0" class="text-green-500 font-semibold">
-                        All tasks completed! Great work!
-                    </span>
-                </p>
-            </header>
+    <!-- Main application container, structure now matches original page -->
+    <div ng-app="sampleApp">
+        <div class="w-full max-w-lg"> <!-- This extra div ensures the nesting level is correct -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-2xl p-6 sm:p-8" ng-controller="SampleListController as sampleList">
+                
+                <!-- Header section with an icon -->
+                <header class="flex items-center justify-center flex-col text-center mb-6">
+                     <!-- Updated icon to LambdaTest colors -->
+                     <div class="flex items-center justify-center bg-rose-100 rounded-full h-16 w-16 mb-4">
+                         <svg class="h-8 w-8 text-rose-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                     </div>
+                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">LambdaTest To-Do</h1>
+                    <p class="text-gray-500 mt-2">
+                        <span ng-if="sampleList.remaining() > 0">
+                            You have {{sampleList.remaining()}} of {{sampleList.sampletodos.length}} tasks remaining.
+                        </span>
+                        <span ng-if="sampleList.remaining() === 0" class="text-green-500 font-semibold">
+                            All tasks completed! Great work!
+                        </span>
+                    </p>
+                </header>
 
-            <!-- To-Do List -->
-            <ul class="list-unstyled space-y-3 mb-6">
-                <!-- ng-repeat directive to iterate over to-do items -->
-                <li ng-repeat="sampletodo in sampleList.sampletodos" class="todo-item group flex items-center justify-between p-3 rounded-lg transition-all duration-200 hover:bg-gray-50 hover:shadow-md">
-                    <div class="flex items-center overflow-hidden mr-2">
+                <!-- To-Do List -->
+                <ul class="list-unstyled space-y-3 mb-6">
+                    <!-- The <span> is now a direct child of the <li>, matching the original XPath -->
+                    <li ng-repeat="sampletodo in sampleList.sampletodos" class="todo-item flex items-center p-3 rounded-lg transition-all duration-200 hover:bg-gray-50 hover:shadow-md">
                         <input type="checkbox" ng-model="sampletodo.done" name="{{sampletodo.name}}" class="custom-checkbox">
-                        <!-- Text of the to-do item with responsive font size -->
                         <span ng-class="{'line-through text-gray-400': sampletodo.done, 'text-gray-700': !sampletodo.done}" class="text-base sm:text-lg transition-colors duration-300 truncate">
                             {{sampletodo.text}}
                         </span>
-                    </div>
-                     <!-- Delete button that appears on hover, with an increased tap area for mobile -->
-                    <button ng-click="sampleList.deleteTodo($index)" class="text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-500 p-2 rounded-full -m-2 flex-shrink-0">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                    </button>
-                </li>
-            </ul>
+                    </li>
+                </ul>
 
-            <!-- Form to add new to-do items -->
-            <form ng-submit="sampleList.addsampletodo()" class="flex flex-col sm:flex-row gap-3">
-                <input 
-                    type="text" 
-                    id="sampletodotext" 
-                    ng-model="sampleList.sampletodoText" 
-                    size="30"
-                    placeholder="Add a new task..." 
-                    class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 transition-shadow">
-                <!-- Updated button to LambdaTest colors -->
-                <input 
-                    class="w-full sm:w-auto bg-rose-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 transition-transform duration-200 active:scale-95 cursor-pointer" 
-                    type="submit" 
-                    id="addbutton" 
-                    value="Add">
-            </form>
+                <!-- Form to add new to-do items -->
+                <form ng-submit="sampleList.addsampletodo()" class="flex flex-col sm:flex-row gap-3">
+                    <input 
+                        type="text" 
+                        id="sampletodotext" 
+                        ng-model="sampleList.sampletodoText" 
+                        size="30"
+                        placeholder="Add a new task..." 
+                        class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 transition-shadow">
+                    <!-- Updated button to LambdaTest colors -->
+                    <input 
+                        class="w-full sm:w-auto bg-rose-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 transition-transform duration-200 active:scale-95 cursor-pointer" 
+                        type="submit" 
+                        id="addbutton" 
+                        value="Add">
+                </form>
 
+            </div>
         </div>
     </div>
 
