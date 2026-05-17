@@ -18,8 +18,8 @@ With TestMu AI (Formerly LambdaTest), you can run automated Selenium and Playwri
 ### Prerequisites
 
 1. A modern web browser (Chrome, Firefox, Safari, etc.).
-2. A TestMu AI account — [sign up here](https://www.testmuai.com/register/).
-3. Your TestMu AI Username and Access Key from the [Automation Dashboard](https://automation.testmuai.com/).
+2. A TestMu AI account — sign up here.
+3. Your TestMu AI Username and Access Key from the Automation Dashboard.
 4. For automated tests: Node.js (v16 or higher) or Python 3.7+ depending on the test runner used.
 
 ### Setup
